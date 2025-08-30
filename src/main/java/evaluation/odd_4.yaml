@@ -1,0 +1,19 @@
+supported_parking_lot_conditions:
+  INCLUDE_AND:
+    parking_lot_length: > 12 m
+    is_curve: true
+
+unsupported_parking_lot_conditions:
+  INCLUDE_AND:
+    surface:
+      - puddle
+      - snow_covered
+    location:
+      - on_shoulder
+      - partly_on_subject_vehicle_lane
+
+parking_lot_conditions:
+  INCLUDE_AND:
+    - supported_parking_lot_conditions
+  EXCLUDE_OR:
+    - unsupported_parking_lot_conditions

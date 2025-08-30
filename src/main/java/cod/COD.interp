@@ -1,0 +1,58 @@
+token literal names:
+null
+null
+'    '
+'        '
+'            '
+'-'
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+null
+
+token symbolic names:
+null
+RELATIONALOPERATOR
+TAB
+DTAB
+TTAB
+MINUS
+INTEGER
+DECIMAL
+MEASURMENT
+TRUE
+FALSE
+INCLUDE_AND
+INCLUDE_OR
+EXCLUDE_AND
+EXCLUDE_OR
+ALPHANUMERIC
+ID
+BOOL
+INT
+DEC
+STR
+MODULE_ID_REF
+WS
+
+rule names:
+input
+statement
+condition
+
+
+atn:
+[4, 1, 22, 22, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 4, 0, 8, 8, 0, 11, 0, 12, 0, 9, 1, 0, 3, 0, 13, 8, 0, 1, 1, 1, 1, 1, 1, 3, 1, 18, 8, 1, 1, 2, 1, 2, 1, 2, 0, 0, 3, 0, 2, 4, 0, 1, 1, 0, 17, 20, 21, 0, 12, 1, 0, 0, 0, 2, 17, 1, 0, 0, 0, 4, 19, 1, 0, 0, 0, 6, 8, 3, 2, 1, 0, 7, 6, 1, 0, 0, 0, 8, 9, 1, 0, 0, 0, 9, 7, 1, 0, 0, 0, 9, 10, 1, 0, 0, 0, 10, 13, 1, 0, 0, 0, 11, 13, 5, 0, 0, 1, 12, 7, 1, 0, 0, 0, 12, 11, 1, 0, 0, 0, 13, 1, 1, 0, 0, 0, 14, 15, 5, 16, 0, 0, 15, 18, 3, 4, 2, 0, 16, 18, 5, 21, 0, 0, 17, 14, 1, 0, 0, 0, 17, 16, 1, 0, 0, 0, 18, 3, 1, 0, 0, 0, 19, 20, 7, 0, 0, 0, 20, 5, 1, 0, 0, 0, 3, 9, 12, 17]
