@@ -1,7 +1,7 @@
 # VeriODD
 
 **VeriODD** is an ANTLR-based toolchain that compiles YAML ODD/COD specifications into  
-(i) human-readable *propositional formulas* and (ii) solver-ready *SMT-LIB* for automated verification with **Z3**.  
+(i) human-readable *propositional logic formulas* and (ii) solver-ready *SMT-LIB* for automated verification with **Z3**.  
 It supports module-level checks (consistency and COD-in-ODD) and comes with a simple GUI.
 
 ---
