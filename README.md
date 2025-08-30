@@ -21,7 +21,7 @@ It supports module-level checks (consistency and COD-in-ODD) and comes with a si
   - ANTLR4 grammars: `ODD.g4`, `COD.g4`
   - Visitors: `ODDVisitorSMTLIB`, `ODDVisitorPropositionalLogic`, `CODVisitorSMTLIB`, `CODVisitorPropositionalLogic`
 - **Tested**
-  - 135 golden unit tests across all four translators
+  - 145 golden unit tests across all four translators
 
 ---
 
