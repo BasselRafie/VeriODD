@@ -1,8 +1,0 @@
-(declare-const parking_lot_lenght Int)
-(declare-const is_curve Bool)
-(declare-const surface String)
-(declare-const road_type String)
-
-(define-fun testODD1 () Bool
-(and (and (> parking_lot_lenght 12) is_curve) (not (or (or (= surface "snow_covered") (= surface "puddle")) (= road_type "rural"))))
-)

@@ -1,0 +1,41 @@
+#Example1
+module_lane_assistant:
+    INCLUDE_AND:
+        speed:
+            - >= 60 km/h
+            - <= 200 km/h
+        - module_not_allowed_weather
+        location: highway
+        lane_marking_visible: true
+
+module_not_allowed_weather:
+    EXCLUDE_OR:
+        weather:
+            - snow
+            - heavy_rain
+
+
+#Example2
+module_allowed_slope:
+    INCLUDE_AND:
+        rise: <= 15
+        gradient: <= 15
+
+module_marking:
+    INCLUDE_AND:
+        road_marking:
+            - lane_marking
+            - guardrail
+
+module_not_allowed_weather:
+    EXCLUDE_OR:
+        heavy_rain: true
+        snow: true
+
+overall_module:
+    INCLUDE_AND:
+        - module_allowed_slope
+        - module_marking
+        visibility: >= 100
+    EXCLUDE_OR:
+        - module_not_allowed_weather
