@@ -12,7 +12,7 @@ It supports module-level checks (consistency and COD-in-ODD) and comes with a si
   - ODD → Propositional Logic, SMT-LIB
   - COD → Propositional Logic, SMT-LIB
 - **Module-level reasoning**
-  - Assert one or more ODD modules (e.g., top module)
+  - Assert one or more ODD modules
   - Optionally include COD facts
 - **Integrated verification**
   - One-click `(check-sat)` and optional `(get-model)`; results shown in the UI
@@ -23,12 +23,6 @@ It supports module-level checks (consistency and COD-in-ODD) and comes with a si
 - **Tested**
   - 145 golden unit tests across all four translators
 
----
-
-## Input language (YAML)
-
-VeriODD targets a YAML ODD/COD taxonomy used in an OEM’s development process, **based on and extending** the structure in [16] and **very close** to ASAM OpenODD (minor deviations remain).  
-The ANTLR grammars (`ODD.g4`, `COD.g4`) define the input rules.
 
 **Example ODD (excerpt):**
 ```yaml
@@ -66,19 +60,13 @@ location: on_shoulder
 ## Quick start
 
 ### Prerequisites
-- **Java 11+** (Java 17 recommended)
+- **Java 11+**
 - **Maven** or **Gradle**
 - **Z3** with Java bindings (jar + native library on your `java.library.path`)
 
-### Build (Maven)
-```bash
-mvn -q -DskipTests package
-```
+### Run
+Clone this repository, build it, and run the `VeriODD` class:
 
-### Run the GUI
-```bash
-java -jar target/veriodd-<version>.jar
-```
 - Start screen: choose **Translate** or **Verify**.
 - **Translate mode:** pick input type (ODD/COD) and target (Propositional / SMT-LIB).
 - **Verify mode:** paste ODD and COD; select ODD module(s); choose `check-sat` and/or `get-model`; press **Verify**.  
@@ -86,56 +74,6 @@ java -jar target/veriodd-<version>.jar
 
 ---
 
-## Command-line examples
-
-### ODD → SMT-LIB / Propositional
-```bash
-# SMT-LIB
-java -cp target/veriodd-<version>.jar veriodd.cli.Translate --type ODD --to smtlib \
-     --in examples/odd.yaml --out out/odd.smt2
-
-# Propositional
-java -cp target/veriodd-<version>.jar veriodd.cli.Translate --type ODD --to prop \
-     --in examples/odd.yaml --out out/odd.prop.txt
-```
-
-### COD → SMT-LIB / Propositional
-```bash
-java -cp target/veriodd-<version>.jar veriodd.cli.Translate --type COD --to smtlib \
-     --in examples/cod.yaml --out out/cod.smt2
-```
-
-### Verify (assemble + check with Z3)
-```bash
-java -cp target/veriodd-<version>.jar veriodd.cli.Verify \
-     --odd examples/odd.yaml --cod examples/cod.yaml \
-     --modules parking_lot_conditions --check-sat --get-model
-```
-
----
-
-## Programmatic use (Java)
-```java
-String oddYaml = Files.readString(Path.of("examples/odd.yaml"));
-String codYaml = Files.readString(Path.of("examples/cod.yaml"));
-
-String oddSmt = VeriODD.Translators.translateToSmtLib(oddYaml, "ODD");
-String codSmt = VeriODD.Translators.translateToSmtLib(codYaml, "COD");
-String oddProp = VeriODD.Translators.translateToPropositional(oddYaml, "ODD");
-
-String script = VeriODD.Assembler.assemble(oddSmt, codSmt,
-        List.of("parking_lot_conditions"), /*checkSat*/ true, /*getModel*/ true);
-
-// Hand to Z3 (example)
-try (Context ctx = new Context()) {
-    BoolExpr[] cs = ctx.parseSMTLIB2String(VeriODD.Assembler.stripCommands(script), null, null, null, null);
-    Solver s = ctx.mkSolver(); for (BoolExpr c : cs) s.add(c);
-    Status st = s.check(); System.out.println(st);
-    if (st == Status.SATISFIABLE) System.out.println(s.getModel());
-}
-```
-
----
 
 ## Testing
 Run all unit tests (golden output checks for all translators):
