@@ -16,16 +16,31 @@ public final class Evaluation {
     // Toggle model extraction during perf runs (false avoids overhead)
     static final boolean GET_MODEL = false;
 
-    static final String SMALL_ODD_PATH = "C:\\Users\\br17\\Documents\\GitHub\\odd_compiler\\src\\main\\java\\evaluation\\odd_4.yaml";
-
-    // Path to your 1000-variable ODD file (adjust if needed)
     static final String LARGE_ODD_PATH = "C:\\Users\\br17\\Documents\\GitHub\\odd_compiler\\src\\main\\java\\evaluation\\odd_1000.yaml";
 
     public static void main(String[] args) throws Exception {
         // ---- SMALL ODD (parking lot) ----
-        String oddYamlSmall = readAll(SMALL_ODD_PATH);
+        String oddYamlSmall = "supported_parking_lot_conditions:\n" +
+                "    INCLUDE_AND:\n" +
+                "        parking_lot_length: > 12 m\n" +
+                "        is_curve: true\n" +
+                "\n" +
+                "unsupported_parking_lot_conditions:\n" +
+                "    INCLUDE_AND:\n" +
+                "        surface:\n" +
+                "            - puddle\n" +
+                "            - snow_covered\n" +
+                "        location:\n" +
+                "            - on_shoulder\n" +
+                "            - partly_on_subject_vehicle_lane\n" +
+                "\n" +
+                "parking_lot_conditions:\n" +
+                "    INCLUDE_AND:\n" +
+                "        - supported_parking_lot_conditions\n" +
+                "    EXCLUDE_OR:\n" +
+                "        - unsupported_parking_lot_conditions";
 
-        // ---- LARGE ODD: load the 1000-variable ODD from file; top module is "big_odd" ----
+        // ---- LARGE ODD (1000 vars; top module "big_odd") ----
         String oddYamlLarge = readAll(LARGE_ODD_PATH);
 
         // COD datasets (matching each ODD)
@@ -44,35 +59,41 @@ public final class Evaluation {
     static void runOneODD(String name, String oddYaml, List<String> allCODs, List<String> modules) throws Exception {
         System.out.println("\n== ODD " + name + " ==");
         for (int n : BATCH_SIZES) {
-            bench(oddYaml, allCODs.subList(0, n), modules, REPEATS);
+            benchEndToEnd(oddYaml, allCODs.subList(0, n), modules, REPEATS);
         }
     }
 
-    static void bench(String oddYaml, List<String> codBatch, List<String> modules, int repeats) throws Exception {
-        long tTransOdd = 0, tTotal = 0;
+    /**
+     * End-to-end benchmark:
+     *   - Starts the timer BEFORE translating the ODD
+     *   - Includes translating every COD, assembling scripts, creating Z3 contexts/solvers,
+     *     parsing SMT2, check-sat, and optional get-model
+     *   - Stops AFTER the last solver check in the batch
+     */
+    static void benchEndToEnd(String oddYaml, List<String> codBatch, List<String> modules, int repeats) throws Exception {
+        long tTotal = 0;
         for (int r = 0; r < repeats; r++) {
-            // ODD -> SMT-LIB (one-time per run)
-            long t0 = nanoTime();
-            String oddSmt = VeriODD.Translators.translateToSmtLib(oddYaml, "odd");
-            long t1 = nanoTime();
-            tTransOdd += (t1 - t0);
-
             long start = nanoTime();
-            // Baseline: fresh solver per COD
+
+            // ODD -> SMT-LIB (counted in end-to-end total)
+            String oddSmt = VeriODD.Translators.translateToSmtLib(oddYaml, "odd");
+
+            // Per-COD pipeline (all counted in end-to-end total)
             for (String codYaml : codBatch) {
                 String codSmt = VeriODD.Translators.translateToSmtLib(codYaml, "cod");
                 String script = assemble(oddSmt, codSmt, modules, true, GET_MODEL);
                 solveOnce(script);
             }
+
             tTotal += (nanoTime() - start);
         }
-        double avgTransOddMs = tTransOdd / 1e6 / repeats;
-        double avgTotalMs    = tTotal    / 1e6 / repeats;
-        double avgPerCODMs   = avgTotalMs / codBatch.size();
+
+        double avgTotalMs  = tTotal / 1e6 / repeats;
+        double avgPerCODMs = avgTotalMs / codBatch.size();
 
         System.out.printf(Locale.US,
-                "CODs=%d  ODD-translate=%.2f ms  Total=%.2f ms  Avg/COD=%.3f ms%n",
-                codBatch.size(), avgTransOddMs, avgTotalMs, avgPerCODMs);
+                "CODs=%d  EndToEndTotal=%.2f ms  EndToEndAvg/COD=%.3f ms%n",
+                codBatch.size(), avgTotalMs, avgPerCODMs);
     }
 
     // ---------- Solver wiring ----------
@@ -144,8 +165,7 @@ public final class Evaluation {
     }
 
     // Large ODD CODs — matches the 1000-variable ODD (var_0001..var_1000)
-    // Pattern mirrors the generator used for the ODD:
-    // i % 3 == 1 -> boolean; i % 3 == 2 -> integer; else -> enum string "state_k"
+    // i % 3 == 1 -> boolean; i % 3 == 2 -> integer; else -> enum-like "state_k"
     static List<String> generateCODsLarge1000(int n) {
         List<String> out = new ArrayList<>(n);
         Random rnd = new Random(12345);
