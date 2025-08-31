@@ -18,7 +18,7 @@ Clone this repository, build it, and run the `VeriODD` class.
 
 
 
-**Example COD:**
+**Example ODD:**
 ```yaml
 supported_parking_lot_conditions:
     INCLUDE_AND:
