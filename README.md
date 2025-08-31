@@ -22,8 +22,8 @@ cd veriodd
 mvn -q -DskipTests package
 java -cp target/veriodd-<version>.jar veriodd.VeriODD
 
-
-**Example ODD (excerpt):**
+```
+**Example ODD:**
 ```yaml
 supported_parking_lot_conditions:
     INCLUDE_AND:
