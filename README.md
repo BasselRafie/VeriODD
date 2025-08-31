@@ -14,9 +14,12 @@ It supports module-level checks (consistency and COD-in-ODD) and comes with a si
 - **Z3** with Java bindings (jar + native library on your `java.library.path`)
 
 ### Run
-Clone this repository, build it, and run the `VeriODD` class:
+Clone this repository, build it, and run the `VeriODD` class.
+
 
 ```
+
+
 **Example ODD:**
 ```yaml
 supported_parking_lot_conditions:
