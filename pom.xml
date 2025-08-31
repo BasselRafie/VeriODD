@@ -13,6 +13,7 @@
         <maven.compiler.target>20</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.fifesoft</groupId>
@@ -48,5 +49,29 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- Creates a single shaded (all-dependencies) JAR named veriodd.jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- keeps your original POM; only the output JAR is shaded -->
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <!-- final artifact name: target/veriodd.jar -->
+                            <finalName>veriodd</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
