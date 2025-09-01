@@ -15,7 +15,9 @@ It supports module-level checks (consistency and COD-in-ODD) and comes with a si
 
 ### Run
 Clone this repository, navigate to JAR -> VeriODD.jar and start the tool.
+
 OR
+
 Clone this repository, build it, and run the `VeriODD` class.
 
 
