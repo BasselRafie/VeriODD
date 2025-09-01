@@ -1,18 +1,17 @@
 #Example1
-module_lane_assistant:
-    INCLUDE_AND:
-        speed:
-            - >= 60 km/h
-            - <= 200 km/h
-        - module_not_allowed_weather
-        location: highway
-        lane_marking_visible: true
 
 module_not_allowed_weather:
     EXCLUDE_OR:
         weather:
             - snow
             - heavy_rain
+
+module_lane_assistant:
+    INCLUDE_AND:
+        speed: >= 60 km/h
+        - module_not_allowed_weather
+        location: highway
+        lane_marking_visible: true
 
 
 #Example2
