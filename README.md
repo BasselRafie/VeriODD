@@ -9,7 +9,7 @@ It supports module-level checks (consistency and COD-in-ODD) and comes with a si
 ## Quick start
 
 ### Prerequisites
-- **Java 11+**
+- **Java JDK 24+**
 - **Maven** or **Gradle**
 - **Z3** with Java bindings (jar + native library on your `java.library.path`)
 
