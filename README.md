@@ -17,7 +17,7 @@ Clone this repository, navigate to JAR -> VeriODD.jar and start the tool.
 
 OR
 
-Clone this repository, build it as a maven project, and run the `VeriODD` class.
+Clone this repository, build it as a maven project, navigate to src -> main -> java -> veriodd and run `VeriODD.java`.
 
 
 
