@@ -8,7 +8,7 @@ It supports module-level checks (consistency and COD-in-ODD) and comes with a si
 
 
 ## 🎥 Demo Video
-[![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=odRacNoL_Pk)
+[![Watch the demo](https://www.youtube.com/watch?v=odRacNoL_Pk)
 
 ---
 
